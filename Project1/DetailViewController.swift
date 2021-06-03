@@ -19,10 +19,22 @@ class DetailViewController: UIViewController {
         
         title = "Picture \(selectedPictureNumber) of \(totalPicture)"
         navigationItem.largeTitleDisplayMode = .never
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareImage))
 
         if let imageToLoad = selectedImage {
             imageView.image = UIImage(named: imageToLoad)
         }
+    }
+    
+    @objc func shareImage() {
+        guard let image = imageView.image?.pngData()
+        else {
+            print("no image")
+            return
+        }
+        let vc = UIActivityViewController(activityItems: [image, selectedImage!], applicationActivities: [])
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+      present(vc, animated: true)
     }
     
     //hides bar on tap
